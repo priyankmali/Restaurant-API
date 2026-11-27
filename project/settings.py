@@ -14,19 +14,13 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables from .env file
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DJANGO_SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')  # Load the secret key from environment variable
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
+load_dotenv(BASE_DIR / '.env')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = DJANGO_SECRET_KEY
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -40,9 +34,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'accounts', # new app
     'restaurants', # new app
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +125,11 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+#Default auto Field
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#media configuration
+MEDIA_URL='/media/'
+MEDIA_ROOT=BASE_DIR/'media'
