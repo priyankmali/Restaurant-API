@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
+
 
 load_dotenv()  # Load environment variables from .env file
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,7 +25,7 @@ DJANGO_SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')  # Load the secret key from e
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = DJANGO_SECRET_KEY
+SECRET_KEY = 'DJANGO_SECRET_KEY'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,6 +45,9 @@ INSTALLED_APPS = [
 
     'accounts', # new app
     'restaurants', # new app
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +136,32 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+
+    'DEFAULT_PERMISSION_CLASSES': [        
+        
+        'rest_framework.permissions.IsAuthenticated'
+    ],
+}
+
+
+SIMPLE_JWT = {
+    ' ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# DEFAULT_FROM_EMAIL = 'admin@restaurant.com'
+
+
+MEDIA_URL ='/media/'
+
+MEDIA_ROOT = BASE_DIR / 'media'
